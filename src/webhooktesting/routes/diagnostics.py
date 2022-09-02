@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 
-from src._version import __version__
-from src.schemas.response import (
+from webhooktesting._version import __version__
+from webhooktesting.schemas.response import (
     HealthCheckResponse,
     WebhookTesterException,
     VersionResponse,

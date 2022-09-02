@@ -22,4 +22,4 @@ jobs:
           pipenv run flake8 . --show-source --statistics
       - name: Test with pytest
         run: |
-          pipenv run pytest
+          PYTHONPATH=src pipenv run pytest

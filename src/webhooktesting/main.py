@@ -1,7 +1,7 @@
 import secure
 from fastapi import FastAPI
 
-from src.routes import diagnostics
+from webhooktesting.routes import diagnostics
 
 app = FastAPI()
 
