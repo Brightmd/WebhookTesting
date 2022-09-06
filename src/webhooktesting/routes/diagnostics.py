@@ -3,7 +3,6 @@ from fastapi import APIRouter, status
 from webhooktesting._version import __version__
 from webhooktesting.schemas.response import (
     HealthCheckResponse,
-    WebhookTesterException,
     VersionResponse,
 )
 
@@ -18,10 +17,6 @@ router = APIRouter(prefix="/webhooktesting")
         status.HTTP_200_OK: {
             "description": "Successful Response",
             "model": HealthCheckResponse,
-        },
-        status.HTTP_503_SERVICE_UNAVAILABLE: {
-            "description": "Service Unavailable",
-            "model": WebhookTesterException,
         },
     },
 )
