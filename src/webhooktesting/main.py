@@ -1,7 +1,7 @@
 import secure
 from fastapi import FastAPI
 
-from webhooktesting.routes import diagnostics
+from webhooktesting.routes import diagnostics, core
 
 app = FastAPI()
 
@@ -20,3 +20,4 @@ async def set_secure_headers(request, call_next):
 
 
 app.include_router(diagnostics.router)
+app.include_router(core.router)
