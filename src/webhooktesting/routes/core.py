@@ -1,3 +1,4 @@
+import random
 from typing import Any
 
 from fastapi import APIRouter, Query, Body
@@ -34,6 +35,20 @@ def add(
 ):
     cache.set(data)
     return f"Successfully added {str(data)}"
+
+
+@router.put(
+    "/unreliable",
+    summary="Add a string to the LRU cache with a 50% chance of failure",
+)
+def unreliable_add(
+    data: Any = Body(...),
+):
+    if random.random() > 0.5:
+        cache.set(data)
+        return f"Successfully added {str(data)}"
+    else:
+        return "Failed to add data"
 
 
 @router.get(
