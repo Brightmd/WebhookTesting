@@ -8,11 +8,23 @@ client = TestClient(app)  # Beware cache is not cleared between tests...
 def test_basic_round_trip():
     response = client.put("/webhooktesting", json={"data": "test"})
     assert response.status_code == 200
-    assert response.json() == "[{'data': 'test'}]"
+    assert response.json() == "Successfully added {'data': 'test'}"
 
     response = client.get("/webhooktesting/search?query=data")
     assert response.status_code == 200
     assert response.json() is True
+
+    response = client.get("/webhooktesting")
+    assert response.status_code == 200
+    assert response.json() == "[{'data': 'test'}]"
+
+    response = client.delete("/webhooktesting")
+    assert response.status_code == 200
+    assert response.json() == "Successfully cleared cache"
+
+    response = client.get("/webhooktesting")
+    assert response.status_code == 200
+    assert response.json() == "[]"
 
 
 def test_no_data():

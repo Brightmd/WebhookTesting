@@ -16,5 +16,8 @@ class LRUList:
             self.cache.pop(0)
         self.cache.append(value)
 
+    def clear(self):
+        self.cache = []
+
     def __str__(self):
         return str(self.cache)
