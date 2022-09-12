@@ -44,9 +44,9 @@ def test_missing_data():
 def test_unreliable_add():
     for i in range(1, 100):
         response = client.put("/webhooktesting/unreliable", json={"add": "unreliable"})
-        assert response.status_code == 200
+        assert response.status_code in [200, 400]
         assert response.json() in [
-            "Failed to add data",
+            {"detail": "Failed to add data"},
             "Successfully added {'add': 'unreliable'}",
         ]
 

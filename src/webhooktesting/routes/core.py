@@ -1,7 +1,7 @@
 import random
 from typing import Any
 
-from fastapi import APIRouter, Query, Body
+from fastapi import APIRouter, Query, Body, HTTPException
 
 from webhooktesting.utils.lru_list import LRUList
 
@@ -48,7 +48,7 @@ def unreliable_add(
         cache.set(data)
         return f"Successfully added {str(data)}"
     else:
-        return "Failed to add data"
+        raise HTTPException(status_code=400, detail="Failed to add data")
 
 
 @router.get(
