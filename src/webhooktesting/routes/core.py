@@ -33,4 +33,21 @@ def add(
     data: Any = Body(...),
 ):
     cache.set(data)
+    return f"Successfully added {str(data)}"
+
+
+@router.get(
+    "",
+    summary="Get the LRU cache",
+)
+def list_cache():
     return str(cache)
+
+
+@router.delete(
+    "",
+    summary="Clear the LRU cache",
+)
+def clear_cache():
+    cache.clear()
+    return "Successfully cleared cache"
