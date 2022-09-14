@@ -16,7 +16,7 @@ def test_basic_round_trip():
 
     response = client.get("/webhooktesting")
     assert response.status_code == 200
-    assert response.json() == "[{'data': 'test'}]"
+    assert response.json() == '[{"data": "test"}]'
 
     response = client.delete("/webhooktesting")
     assert response.status_code == 200
