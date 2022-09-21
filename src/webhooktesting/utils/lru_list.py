@@ -1,7 +1,16 @@
+import json
+
+
 class LRUList:
     def __init__(self, capacity):
         self.capacity = capacity
         self.cache = []
+
+    def as_json(self):
+        try:
+            return json.dumps(self.cache)
+        except TypeError:
+            return str(self.cache)
 
     def contains_substring(self, substring):
         for item in self.cache:

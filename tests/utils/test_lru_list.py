@@ -34,3 +34,4 @@ def test_lru_list():
     assert list.contains_substring("elderberry")  # Tests cache moves item to latest
     assert list.contains_substring("grape")
     assert list.contains_substring("honeydew")
+    assert list.as_json() == '["elderberry", "grape", "honeydew"]'

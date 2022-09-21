@@ -56,7 +56,7 @@ def unreliable_add(
     summary="Get the LRU cache",
 )
 def list_cache():
-    return str(cache)
+    return cache.as_json()
 
 
 @router.delete(
