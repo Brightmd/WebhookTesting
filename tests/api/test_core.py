@@ -53,3 +53,30 @@ def test_unreliable_add():
     response = client.get("/webhooktesting/search?query=unreliable")
     assert response.status_code == 200
     assert response.json() is True
+
+
+def test_auth():
+    response = client.delete("/webhooktesting")
+    assert response.status_code == 200
+    assert response.json() == "Successfully cleared cache"
+
+    # Ensure wrong password fails
+    response = client.put(
+        "/webhooktesting/auth", json={"data": "test"}, auth=("PUBLIC", "WRONG")
+    )
+    assert response.status_code == 401
+
+    # Ensure right password succeeds
+    response = client.put(
+        "/webhooktesting/auth", json={"data": "test"}, auth=("PUBLIC", "PUBLIC")
+    )
+    assert response.status_code == 200
+    assert response.json() == "Successfully added {'data': 'test'}"
+
+    response = client.get("/webhooktesting/search?query=data")
+    assert response.status_code == 200
+    assert response.json() is True
+
+    response = client.get("/webhooktesting")
+    assert response.status_code == 200
+    assert response.json() == '[{"data": "test"}]'
