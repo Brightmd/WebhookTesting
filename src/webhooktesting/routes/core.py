@@ -1,12 +1,17 @@
 import random
+import secrets
 from typing import Any
 
-from fastapi import APIRouter, Query, Body, HTTPException
+from fastapi import APIRouter, Query, Body, HTTPException, Depends
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from starlette.status import HTTP_401_UNAUTHORIZED
 
 from webhooktesting.utils.lru_list import LRUList
 
 router = APIRouter(prefix="/webhooktesting")
 
+
+security = HTTPBasic()
 
 # This will be blown out with a restart of the server, but we are ok with that.
 cache = LRUList(100)
@@ -33,6 +38,35 @@ def search(
 def add(
     data: Any = Body(...),
 ):
+    cache.set(data)
+    return f"Successfully added {str(data)}"
+
+
+@router.put(
+    "/auth",
+    summary="Add a string to the LRU cache with basic auth - intentionally insecure",
+)
+def add_with_auth(
+    credentials: HTTPBasicCredentials = Depends(security),
+    data: Any = Body(...),
+):
+    current_username_bytes = credentials.username.encode("utf8")
+    correct_username_bytes = b"PUBLIC"  # This is not a secret
+    is_correct_username = secrets.compare_digest(
+        current_username_bytes, correct_username_bytes
+    )
+    current_password_bytes = credentials.password.encode("utf8")
+    correct_password_bytes = b"PUBLIC"  # This is not a secret
+    is_correct_password = secrets.compare_digest(
+        current_password_bytes, correct_password_bytes
+    )
+    if not (is_correct_username and is_correct_password):
+        raise HTTPException(
+            status_code=HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
     cache.set(data)
     return f"Successfully added {str(data)}"
 
